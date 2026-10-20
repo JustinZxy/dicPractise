@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#e4efe3">
+  <title>大纲组词</title>
+  <link rel="stylesheet" href="css/game.css">
+</head>
+<body>
+  <main class="app">
+    <header class="top">
+      <div class="brand">
+        <p class="eyebrow" id="list-name">高中</p>
+        <h1>大纲组词</h1>
+      </div>
+      <div class="stats" aria-label="本局成绩">
+        <span>答对 <strong id="score">0</strong></span>
+        <span>连对 <strong id="streak">0</strong></span>
+        <span>错词 <strong id="mistake-count">0</strong></span>
+      </div>
+      <div class="tools">
+        <label class="filter">
+          <span>词表</span>
+          <select id="word-list"></select>
+        </label>
+        <label class="filter">
+          <span>范围</span>
+          <select id="range"></select>
+        </label>
+        <button type="button" class="ghost" id="open-settings">设置</button>
+        <button type="button" class="ghost" id="open-book">错词本</button>
+      </div>
+    </header>
+
+    <p class="how">看中文意思，按顺序点选词根、发音或字母。3 个字母及以内的词不出现。组对后，单词、词性和释义会停留 1 秒；超时没组出来，本回合结束，并记入错词本。</p>
+
+    <section class="stage" id="stage" aria-live="polite">
+      <div class="meta">
+        <span class="pill" id="mode-pill">词根</span>
+        <span class="round" id="round-label">第 1 题</span>
+        <span class="clock" id="clock">25 秒</span>
+      </div>
+      <div class="timer" aria-hidden="true"><span id="timer-bar"></span></div>
+
+      <div id="play">
+        <p class="clue-label">词义</p>
+        <p class="clue" id="clue"></p>
+        <div class="slots" id="slots" aria-label="已选词根或字母"></div>
+        <p class="hint" id="hint"></p>
+        <div class="pool" id="pool" aria-label="候选"></div>
+        <div class="actions">
+          <button type="button" class="ghost" id="undo">撤回</button>
+          <button type="button" class="ghost" id="clear">清空</button>
+        </div>
+      </div>
+
+      <div id="result" hidden>
+        <p class="result-kicker" id="result-kicker"></p>
+        <p class="result-word" id="result-word"></p>
+        <p class="result-phonetic" id="result-phonetic" hidden></p>
+        <p class="result-pos" id="result-pos"></p>
+        <p class="result-meaning" id="result-meaning"></p>
+        <p class="result-parts" id="result-parts" hidden></p>
+        <div class="actions" id="result-actions" hidden>
+          <button type="button" class="solid" id="next-round">下一回合</button>
+          <button type="button" class="ghost" id="fail-book">查看错词本</button>
+        </div>
+      </div>
+
+      <div id="empty" hidden>
+        <p class="result-word">这一范围里还没有词</p>
+        <p class="result-meaning">错词本是空的，或当前筛选没有可练习的单词。换一个范围即可。</p>
+      </div>
+    </section>
+
+    <p class="last" id="last" hidden></p>
+  </main>
+
+  <dialog class="book" id="book">
+    <form method="dialog" class="book-card">
+      <header class="book-head">
+        <div>
+          <p class="eyebrow" id="book-where">保存在这台浏览器</p>
+          <h2>错词本</h2>
+        </div>
+        <button type="submit" class="ghost" value="close">关闭</button>
+      </header>
+      <div class="book-tools">
+        <label class="filter">
+          <span>首字母</span>
+          <select id="book-letter"></select>
+        </label>
+        <p class="page-label" id="book-page-label"></p>
+      </div>
+      <ul class="book-list" id="book-list"></ul>
+      <div class="pager">
+        <button type="button" class="ghost" id="book-prev">上一页</button>
+        <button type="button" class="ghost" id="book-next">下一页</button>
+      </div>
+      <div class="book-actions">
+        <button type="button" class="solid" id="practice-mistakes">只练这些错词</button>
+        <button type="button" class="ghost" id="clear-mistakes">清空错词本</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog class="book" id="settings">
+    <form method="dialog" class="book-card settings-card">
+      <header class="book-head">
+        <div>
+          <p class="eyebrow">只保存在这台浏览器</p>
+          <h2>设置</h2>
+        </div>
+        <button type="submit" class="ghost" value="close">关闭</button>
+      </header>
+      <label class="check">
+        <input type="checkbox" id="opt-width" checked>
+        <span>单词框宽度随答案变化</span>
+      </label>
+      <fieldset class="choice">
+        <legend>答题框</legend>
+        <label><input type="radio" name="slot-hint" value="count" checked> 按答案个数显示空位</label>
+        <label><input type="radio" name="slot-hint" value="line"> 只显示一条答题线</label>
+      </fieldset>
+      <label class="check">
+        <input type="checkbox" id="opt-sqlite">
+        <span>错词存入 SQLite（默认关，仍存在浏览器里）</span>
+      </label>
+      <p class="setting-note" id="sqlite-note"></p>
+      <label class="seconds">
+        <span>每题倒计时（秒）</span>
+        <input type="number" id="opt-seconds" min="5" max="180" step="1" value="25" inputmode="numeric">
+      </label>
+    </form>
+  </dialog>
+
+  <script src="js/words.js"></script>
+  <script src="js/game.js"></script>
+</body>
+</html>

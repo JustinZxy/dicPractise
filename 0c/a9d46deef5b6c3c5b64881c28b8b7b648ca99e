@@ -1,0 +1,19 @@
+.gitignore
+  s_1612a106602d82::t_efb3320bdb7d54 1-5
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.50-trip",
+  "base_commit_sha": "0ca9d46deef5b6c3c5b64881c28b8b7b648ca99e",
+  "prompts": {},
+  "sessions": {
+    "s_1612a106602d82": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "7210fd2a-1be4-48f2-a30b-d3714e6ec7f6",
+        "model": "Auto"
+      },
+      "human_author": "Justin <justin@LPT031301.local>"
+    }
+  }
+}
